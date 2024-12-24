@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import axiosWithToken from "@/lib/axiosWithToken";
+import { AxiosError } from "axios";
 
 export const initialCategoryForm = {
   ct_code: "",
@@ -19,13 +20,10 @@ export type Category = CategoryRequest & {
 };
 
 const API_URI = process.env.NEXT_PUBLIC_API_URI!;
-const token = localStorage.getItem("auth");
 
 export async function getDataCategories() {
   try {
-    const { data } = await axios.get(`${API_URI}/api/categories`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.get(`${API_URI}/api/categories`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -37,12 +35,7 @@ export async function getDataCategories() {
 
 export async function getDataCategory(idCategory: string) {
   try {
-    const { data } = await axios.get(
-      `${API_URI}/api/categories/${idCategory}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
+    const { data } = await axiosWithToken.get(`${API_URI}/api/categories/${idCategory}`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -54,9 +47,7 @@ export async function getDataCategory(idCategory: string) {
 
 export async function addDataCategory(values: CategoryRequest) {
   try {
-    const { data } = await axios.post(`${API_URI}/api/categories`, values, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.post(`${API_URI}/api/categories`, values);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -71,10 +62,9 @@ export async function editDataCategory(
   values: CategoryRequest
 ) {
   try {
-    const { data } = await axios.patch(
+    const { data } = await axiosWithToken.patch(
       `${API_URI}/api/categories/${idCategory}`,
-      values,
-      { headers: { Authorization: `Bearer ${token}` } }
+      values
     );
     return data;
   } catch (error) {
@@ -87,9 +77,8 @@ export async function editDataCategory(
 
 export async function deleteSelectedCategory(ids: string[]) {
   try {
-    const { data } = await axios.delete(`${API_URI}/api/categories`, {
+    const { data } = await axiosWithToken.delete(`${API_URI}/api/categories`, {
       data: { ids },
-      headers: { Authorization: `Bearer ${token}` },
     });
     return data;
   } catch (error) {
@@ -102,11 +91,8 @@ export async function deleteSelectedCategory(ids: string[]) {
 
 export async function deleteCategory(idCategory: string) {
   try {
-    const { data } = await axios.delete(
-      `${API_URI}/api/categories/${idCategory}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
+    const { data } = await axiosWithToken.delete(
+      `${API_URI}/api/categories/${idCategory}`
     );
     return data;
   } catch (error) {

@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import axiosWithToken from "@/lib/axiosWithToken";
+import { AxiosError } from "axios";
 
 export type ProductItem = {
   product_id: string;
@@ -10,13 +11,10 @@ export type OrderRequest = {
 };
 
 const API_URI = process.env.NEXT_PUBLIC_API_URI!;
-const token = localStorage.getItem("auth");
 
 export async function addDataOrder(values: OrderRequest) {
   try {
-    const { data } = await axios.post(`${API_URI}/api/orders`, values, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.post(`${API_URI}/api/orders`, values);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
