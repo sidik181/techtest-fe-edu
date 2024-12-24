@@ -10,12 +10,12 @@ import {
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import FormUser from "../form-user";
-import { editDataUser } from "../../services";
+import { editDataUser, User } from "../../services";
 import { UserFormData } from "../../schemas";
 
 interface EditUserSheetProps {
   onClose: () => void;
-  user: UserFormData;
+  user: User;
   onUserUpdated: () => void;
 }
 
