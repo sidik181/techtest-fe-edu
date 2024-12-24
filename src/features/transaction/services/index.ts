@@ -1,5 +1,6 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { OrderRequest } from "@/features/order/services";
+import axiosWithToken from "@/lib/axiosWithToken";
 
 export type Order = OrderRequest & {
   _id: string;
@@ -14,13 +15,10 @@ export type Order = OrderRequest & {
 };
 
 const API_URI = process.env.NEXT_PUBLIC_API_URI!;
-const token = localStorage.getItem("auth");
 
 export async function getDataOrders() {
   try {
-    const { data } = await axios.get(`${API_URI}/api/orders`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.get(`${API_URI}/api/orders`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -32,9 +30,7 @@ export async function getDataOrders() {
 
 export async function getDataOrder(idOrder: string) {
   try {
-    const { data } = await axios.get(`${API_URI}/api/orders/${idOrder}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.get(`${API_URI}/api/orders/${idOrder}`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {

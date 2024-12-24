@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import axiosWithToken from "@/lib/axiosWithToken";
+import { AxiosError } from "axios";
 
 export const initialUserForm = {
   us_name: "",
@@ -28,13 +29,10 @@ export type User = UserRequest & {
 };
 
 const API_URI = process.env.NEXT_PUBLIC_API_URI!;
-const token = localStorage.getItem("auth");
 
 export async function getDataUsers() {
   try {
-    const { data } = await axios.get(`${API_URI}/api/users`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.get(`${API_URI}/api/users`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -46,9 +44,7 @@ export async function getDataUsers() {
 
 export async function getDataUser(idUser: string) {
   try {
-    const { data } = await axios.get(`${API_URI}/api/users/${idUser}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.get(`${API_URI}/api/users/${idUser}`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -60,9 +56,7 @@ export async function getDataUser(idUser: string) {
 
 export async function addDataUser(values: UserRequest) {
   try {
-    const { data } = await axios.post(`${API_URI}/api/users`, values, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.post(`${API_URI}/api/users`, values);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -74,10 +68,9 @@ export async function addDataUser(values: UserRequest) {
 
 export async function editDataUser(idUser: string, values: UserRequest) {
   try {
-    const { data } = await axios.patch(
+    const { data } = await axiosWithToken.patch(
       `${API_URI}/api/users/${idUser}`,
-      values,
-      { headers: { Authorization: `Bearer ${token}` } }
+      values
     );
     return data;
   } catch (error) {
@@ -90,9 +83,8 @@ export async function editDataUser(idUser: string, values: UserRequest) {
 
 export async function deleteSelectedUser(ids: string[]) {
   try {
-    const { data } = await axios.delete(`${API_URI}/api/users`, {
+    const { data } = await axiosWithToken.delete(`${API_URI}/api/users`, {
       data: { ids },
-      headers: { Authorization: `Bearer ${token}` },
     });
     return data;
   } catch (error) {
@@ -105,9 +97,9 @@ export async function deleteSelectedUser(ids: string[]) {
 
 export async function deleteUser(idUser: string) {
   try {
-    const { data } = await axios.delete(`${API_URI}/api/users/${idUser}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.delete(
+      `${API_URI}/api/users/${idUser}`
+    );
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {

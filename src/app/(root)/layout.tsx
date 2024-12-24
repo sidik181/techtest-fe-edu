@@ -2,7 +2,7 @@ import { SidebarProvider } from "@/components/organisms/SidebarContext";
 import { Navbar } from "@/components/organisms/Navbar";
 import { Sidebar } from "@/components/organisms/Sidebar";
 import { Breadcrumbs } from "@/components/organisms/Breadcrumbs";
-import AuthLayout from "@/components/organisms/AuthWrapped";
+import AuthWrapped from "@/components/organisms/AuthWrapped";
 import "./root.css";
 
 export default function RootLayout({
@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthLayout>
+    <AuthWrapped>
       <SidebarProvider>
         <div className="flex flex-col h-screen">
           <Navbar />
@@ -26,6 +26,6 @@ export default function RootLayout({
           </div>
         </div>
       </SidebarProvider>
-    </AuthLayout>
+    </AuthWrapped>
   );
 }

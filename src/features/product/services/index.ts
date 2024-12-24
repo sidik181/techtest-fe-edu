@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import axiosWithToken from "@/lib/axiosWithToken";
+import { AxiosError } from "axios";
 
 export const initialProductForm = {
   pd_code: "",
@@ -27,13 +28,10 @@ export type Product = ProductRequest & {
 };
 
 const API_URI = process.env.NEXT_PUBLIC_API_URI!;
-const token = localStorage.getItem("auth");
 
 export async function getDataProducts() {
   try {
-    const { data } = await axios.get(`${API_URI}/api/products`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.get(`${API_URI}/api/products`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -45,9 +43,7 @@ export async function getDataProducts() {
 
 export async function getDataProduct(idProduct: string) {
   try {
-    const { data } = await axios.get(`${API_URI}/api/products/${idProduct}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.get(`${API_URI}/api/products/${idProduct}`);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -59,9 +55,7 @@ export async function getDataProduct(idProduct: string) {
 
 export async function addDataProduct(values: ProductRequest) {
   try {
-    const { data } = await axios.post(`${API_URI}/api/products`, values, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await axiosWithToken.post(`${API_URI}/api/products`, values);
     return data;
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -76,10 +70,9 @@ export async function editDataProduct(
   values: ProductRequest
 ) {
   try {
-    const { data } = await axios.patch(
+    const { data } = await axiosWithToken.patch(
       `${API_URI}/api/products/${idProduct}`,
-      values,
-      { headers: { Authorization: `Bearer ${token}` } }
+      values
     );
     return data;
   } catch (error) {
@@ -92,9 +85,8 @@ export async function editDataProduct(
 
 export async function deleteSelectedProduct(ids: string[]) {
   try {
-    const { data } = await axios.delete(`${API_URI}/api/products`, {
-      data: { ids },
-      headers: { Authorization: `Bearer ${token}` },
+    const { data } = await axiosWithToken.delete(`${API_URI}/api/products`, {
+      data: { ids }
     });
     return data;
   } catch (error) {
@@ -107,9 +99,8 @@ export async function deleteSelectedProduct(ids: string[]) {
 
 export async function deleteProduct(idProduct: string) {
   try {
-    const { data } = await axios.delete(
-      `${API_URI}/api/products/${idProduct}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+    const { data } = await axiosWithToken.delete(
+      `${API_URI}/api/products/${idProduct}`
     );
     return data;
   } catch (error) {
